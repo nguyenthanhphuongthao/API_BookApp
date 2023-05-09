@@ -28,13 +28,16 @@ export const listHistories = ({page, limit, order, search_key, ...query}) => new
 });
 
 //CREATE
-export const createHistory = (body) => new Promise( async(resolve, reject) => {
+export const createHistory = (user_id, body) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.History.findOrCreate({
             where: { 
-                user_id: body.user_id,
+                user_id,
                 book_id: body.book_id },
-            defaults: body
+            defaults: {
+                user_id,
+                ...body
+            }
         });
         resolve({
             err: response[1] ? 0 : -1,
@@ -47,10 +50,12 @@ export const createHistory = (body) => new Promise( async(resolve, reject) => {
 });
 
 //UPDATE
-export const updateHistory = ({id, ...body}) => new Promise( async(resolve, reject) => {
+export const updateHistory = (user_id, body) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.History.update(body, {
-            where: { id }
+            where: { 
+                user_id,
+                book_id: body.book_id }
         });
         resolve({
             err: response[0] > 0 ? 0 : -1,
