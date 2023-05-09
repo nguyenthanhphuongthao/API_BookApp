@@ -39,7 +39,7 @@ module.exports = {
       },
       status_id: {
         type: Sequelize.INTEGER,
-        isIn: [[3, 4]],
+        isIn: [[3, 4, 5]],
         defaultValue: 3,
         references: {
           model: 'Statuses',
