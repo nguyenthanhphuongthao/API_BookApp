@@ -36,6 +36,7 @@ export const updateComment = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -48,6 +49,7 @@ export const deleteComments = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 }

@@ -10,6 +10,7 @@ export const listPosts = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -28,6 +29,7 @@ export const createPost = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -41,6 +43,7 @@ export const updatePost = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -53,6 +56,7 @@ export const deletePosts = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 }

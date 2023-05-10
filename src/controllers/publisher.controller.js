@@ -9,6 +9,7 @@ export const listPublishers = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -21,6 +22,7 @@ export const createPublisher = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -33,6 +35,7 @@ export const updatePublisher = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -45,6 +48,7 @@ export const deletePublishers = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 }

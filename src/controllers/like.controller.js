@@ -9,6 +9,7 @@ export const listLikes = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -22,6 +23,7 @@ export const createLike = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -35,6 +37,7 @@ export const updateLike = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -47,6 +50,7 @@ export const deleteLikes = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 }

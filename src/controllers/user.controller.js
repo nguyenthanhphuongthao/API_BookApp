@@ -11,6 +11,7 @@ export const getCurrentUser = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -21,6 +22,7 @@ export const getProfile = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -34,6 +36,7 @@ export const updateProfile = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 };
@@ -52,6 +55,7 @@ export const updateAvatar = async (req, res) => {
         return res.status(200).json(response);
     }
     catch (error) {
+        console.log(error)
         return internalServerError(res)
     }
 }

@@ -40,7 +40,7 @@ export const register = ({email, password, full_name, phone_number}) => new Prom
             subject: 'Xác nhận đăng ký tài khoản',
             html: `<h1>Xác nhận đăng ký tài khoản</h1>
                 <p>Click vào link sau để xác nhận tài khoản</p>
-                <a href="http://localhost:5000/api/auth/verify?accessToken=${accessToken}">Xác nhận email</a>`
+                <a href="https://bookapp-ltdd.herokuapp.com/api/auth/verify?accessToken=${accessToken}">Xác nhận email</a>`
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -107,7 +107,7 @@ export const resendVerify = (email) => new Promise( async(resolve, reject) => {
                 subject: 'Xác nhận đăng ký tài khoản',
                 html: `<h1>Xác nhận đăng ký tài khoản</h1>
                     <p>Click vào link sau để xác nhận tài khoản</p>
-                    <a href="http://localhost:5000/api/auth/verify?accessToken=${accessToken}">Xác nhận email</a>`
+                    <a href="https://bookapp-ltdd.herokuapp.com/api/auth/verify?accessToken=${accessToken}">Xác nhận email</a>`
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
