@@ -19,7 +19,7 @@ export const login = ({email, password}) => new Promise( async(resolve, reject) 
             }
             });
 
-        if (response && response.role_id == 3) {
+        if (response && response.role_id != 2) {
             const isChecked = response && bcrypt.compareSync(password, response.password);
             const accessToken = isChecked ? jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30m'}) : null;
             //jwt-refresh-token
