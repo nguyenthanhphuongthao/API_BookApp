@@ -1,13 +1,13 @@
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-   'bookapp',
-   'root',
-    null,
+   process.env.DB_NAME,
+   process.env.DB_USERNAME,
+   process.env.DB_PASSWORD,
     {
-      host: 'localhost',
+      host: process.env.DB_HOST,
       dialect: 'mysql',
-      port: 3307,
+      port: process.env.DB_PORT,
       logging: false
     }
   );

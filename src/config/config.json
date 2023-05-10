@@ -1,11 +1,11 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "bookapp",
-    "host": "127.0.0.1",
+    "username": "ltdd_bam",
+    "password": "ltdd_bam123",
+    "database": "bookapp_mobile",
+    "host": "db4free.net",
     "dialect": "mysql",
-    "port": 3307,
+    "port": 3306,
     "logging": false,
     "timezone": "+07:00"
   },
