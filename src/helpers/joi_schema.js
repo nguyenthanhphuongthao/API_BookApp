@@ -9,6 +9,7 @@ export const phone_number = joi.string().length(10).allow(null);
 export const token = joi.string().allow(null);
 export const refresh_token = joi.string().required();
 export const accessToken = joi.string().required();
+export const otp = joi.number().integer().required();
 
 //book
 export const id = joi.number().integer().required();

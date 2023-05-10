@@ -11,8 +11,7 @@ export const login = ({email, password}) => new Promise( async(resolve, reject) 
     try {
         const response = await db.User.findOne({
             where: { 
-                email,
-                role_id: 3
+                email
             },
             raw: true,
             attributes: {
@@ -20,42 +19,56 @@ export const login = ({email, password}) => new Promise( async(resolve, reject) 
             }
             });
 
-        const isChecked = response && bcrypt.compareSync(password, response.password);
-        const accessToken = isChecked ? jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30m'}) : null;
-        //jwt-refresh-token
-        const refreshToken = isChecked ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFESH_TOKEN, { expiresIn: '30d'}) : null;
-        
-        if (isChecked) {
-            delete response.password;
+        if (response && response.role_id == 3) {
+            const isChecked = response && bcrypt.compareSync(password, response.password);
+            const accessToken = isChecked ? jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30m'}) : null;
+            //jwt-refresh-token
+            const refreshToken = isChecked ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFESH_TOKEN, { expiresIn: '30d'}) : null;
+            
+            if (isChecked) {
+                delete response.password;
+            }
+
+            const history = await db.History.findAll({
+                where: { user_id: response.id },
+                raw: true,
+                nest: true,
+                attributes: {
+                    exclude: ['user_id', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    { model: db.Book, as: 'book', attributes: ['title'] },
+                    { model: db.Status, as: 'status', attributes: ['value'] }
+                ]
+            });
+
+            resolve({
+                err: accessToken ? 0 : -1,
+                message: accessToken ? 'Đăng nhập thành công' : 'Mật khẩu không đúng!',
+                access_token: accessToken ? `Bearer ${accessToken}` : null,
+                refresh_token: refreshToken,
+                user_data: isChecked ? response : null,
+                history: isChecked ? history : null
+            });
+
+            if (refreshToken) {
+                await db.User.update({ 
+                    token: refreshToken 
+                }, { 
+                    where: { id: response.id }});
+            }
         }
-
-        const history = await db.History.findAll({
-            where: { user_id: response.id },
-            raw: true,
-            nest: true,
-            attributes: {
-                exclude: ['user_id', 'createdAt', 'updatedAt']
-            },
-            include: [
-                { model: db.Book, as: 'book', attributes: ['title'] },
-                { model: db.Status, as: 'status', attributes: ['value'] }
-            ]
-        });
-
-        resolve({
-            err: accessToken ? 0 : -1,
-            message: accessToken ? 'Đăng nhập thành công' : response ? 'Mật khẩu không đúng!' : 'Email chưa đăng ký tài khoản hoặc chưa được xác thực!',
-            access_token: accessToken ? `Bearer ${accessToken}` : null,
-            refresh_token: refreshToken,
-            user_data: isChecked ? response : null,
-            history: isChecked ? history : null
-        });
-
-        if (refreshToken) {
-            await db.User.update({ 
-                token: refreshToken 
-            }, { 
-                where: { id: response.id }});
+        else if (response && response.role_id == 2) {
+            resolve({
+                err: -1,
+                message: 'Tài khoản của bạn chưa được kích hoạt!'
+            });
+        }
+        else if (!response) {
+            resolve({
+                err: -1,
+                message: 'Email chưa đăng ký tài khoản!'
+            });
         }
     }
     catch (error) {

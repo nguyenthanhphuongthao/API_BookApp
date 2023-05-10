@@ -53,8 +53,7 @@ export const register = ({email, password, full_name, phone_number}) => new Prom
         resolve({
             err: response[1] ? 0 : -1,
             message: response[1] ? 'Đăng ký tài khoản thành công. Email xác thực tài khoản đã được gửi đến email của bạn. Vui lòng xác thực mail trước khi đăng nhập!' : 'Email này đã được đăng ký tài khoản!',
-            access_token: accessToken ? `Bearer ${accessToken}` : null,
-            refresh_token: refreshToken
+            access_token: accessToken ? `Bearer ${accessToken}` : null
         });
     }
     catch (error) {
@@ -129,6 +128,131 @@ export const resendVerify = (email) => new Promise( async(resolve, reject) => {
             });
         }
     } catch (error) {
+        reject(error);
+    }
+});
+
+export const sendOTP = (email) => new Promise( async(resolve, reject) => {
+    try {
+        const user = await db.User.findOne({
+            where: { email }
+        });
+
+        if (user) {
+            const otp = Math.floor(1000 + Math.random() * 9000);
+            //send mail
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: "thaownguyen21602@gmail.com",
+                    pass: "twibfassakmfhtvf"
+                }
+            });
+            let mailOptions = {
+                from: "thaownguyen21602@gmail.com",
+                to: email,
+                subject: 'Xác thực người dùng',
+                html: `<h1>Xác thực người dùng</h1>
+                    <p>OTP xác thực người dùng của bạn là: ${otp}</p>`
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                    reject(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+            await db.User.update({
+                otp
+            }, {
+                where: { id: user.id }
+            });
+            resolve({
+                err: 0,
+                message: 'OTP đã được gửi đến email của bạn. Vui lòng kiểm tra và điền OTP vào ô bên dưới để xác thực người dùng!'
+            });
+        }
+        else {
+            resolve({
+                err: -1,
+                message: 'Email này chưa đăng ký tài khoản!'
+            });
+        }
+    }
+    catch (error) {
+        reject(error);
+    }
+});
+
+export const checkOTP = ({email, otp}) => new Promise( async(resolve, reject) => {
+    try {
+        const user = await db.User.findOne({
+            where: { email }
+        });
+
+        if (user) {
+            if (user.otp == otp) {
+                resolve({
+                    err: 0,
+                    message: 'Xác thực người dùng thành công'
+                });
+                await db.User.update({
+                    otp: 1
+                }, {
+                    where: { id: user.id }
+                });
+            }
+            else {
+                resolve({
+                    err: -1,
+                    message: 'OTP không đúng!'
+                });
+            }
+        }
+        else {
+            resolve({
+                err: -1,
+                message: 'Email này chưa đăng ký tài khoản!'
+            });
+        }
+    }
+    catch (error) {
+        reject(error);
+    }
+});
+
+export const resetPassword = ({email, password}) => new Promise( async(resolve, reject) => {
+    try {
+        console.log(email, password);
+        const response = await db.User.update({
+            password: hashPassword(password)
+        }, {
+            where: { email, otp: 1 }
+        });
+        console.log(response);
+        if (response[0] == 1) {
+            resolve({
+                err: 0,
+                message: 'Cập nhật mật khẩu thành công'
+            });
+            await db.User.update({
+                otp: null
+            }, {
+                where: { email }
+            });
+        }
+        else {
+            resolve({
+                err: -1,
+                message: 'Cập nhật mật khẩu thất bại'
+            });
+        }
+    }
+    catch (error) {
         reject(error);
     }
 });

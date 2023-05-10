@@ -40,6 +40,9 @@ module.exports = {
           key: 'id'
         }
       },
+      otp: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
