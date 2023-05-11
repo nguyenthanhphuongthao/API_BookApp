@@ -21,9 +21,9 @@ export const login = ({email, password}) => new Promise( async(resolve, reject) 
 
         if (response && response.role_id != 2) {
             const isChecked = response && bcrypt.compareSync(password, response.password);
-            const accessToken = isChecked ? jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30m'}) : null;
+            const accessToken = isChecked ? jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30d'}) : null;
             //jwt-refresh-token
-            const refreshToken = isChecked ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFESH_TOKEN, { expiresIn: '30d'}) : null;
+            const refreshToken = isChecked ? jwt.sign({ id: response.id }, process.env.JWT_SECRET_REFESH_TOKEN, { expiresIn: '365d'}) : null;
             
             if (isChecked) {
                 delete response.password;
@@ -122,7 +122,7 @@ export const refreshToken = ({refresh_token}) => new Promise( async(resolve, rej
                     });
                 }
                 else {
-                    const accessToken = jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '5d'});
+                    const accessToken = jwt.sign({ id: response.id, full_name: response.full_name, role_id: response.role_id }, process.env.JWT_SECRET, { expiresIn: '30d'});
                     resolve({
                         err: 0,
                         message: 'Refresh token successfully!',
