@@ -10,6 +10,7 @@ import history from './history.router';
 import comment from './comment.router';
 import share from './share.router';
 import review from './review.router';
+import insert from './insert.router';
 import { notFound } from '../middlewares/handle_errors';
 
 const initRoutes = (app) => {
@@ -26,6 +27,7 @@ const initRoutes = (app) => {
     app.use('/api/comment', comment);
     app.use('/api/share', share);
     app.use('/api/review', review);
+    app.use('/api/insert', insert);
 
     app.use(notFound);
 };

@@ -21,7 +21,7 @@ export const image_url = joi.string().required();
 export const link = joi.string().required();
 export const category_id = joi.number().integer().required();
 export const publisher_id = joi.number().integer().required();
-export const status_id = joi.number().integer().required();
+export const status_id = joi.number().integer().allow(null);
 
 //category - publisher
 export const name = joi.string().required();

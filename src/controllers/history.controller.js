@@ -16,7 +16,7 @@ export const listHistories = async (req, res) => {
 export const createHistory = async (req, res) => {
     try {
         const user_id = req.user.id;
-        const { error } = joi.object({ user_id, book_id, location, current_page, highlights, bookmarks }).validate({user_id, ...req.body});
+        const { error } = joi.object({ user_id, book_id, location, current_page, highlights, bookmarks, status_id }).validate({user_id, ...req.body});
         if (error) return badRequest(error.details[0]?.message, res);
         const response = await services.createHistory(user_id, req.body);
         return res.status(200).json(response);
@@ -41,11 +41,12 @@ export const updateHistory = async (req, res) => {
     }
 };
 
-export const deleteHistories = async (req, res) => {
+export const deleteHistory = async (req, res) => {
     try {
-        const { error } = joi.object({ ids }).validate(req.query);
+        const user_id = req.user.id;
+        const { error } = joi.object({ user_id, book_id }).validate({user_id, ...req.body});
         if (error) return badRequest(error.details[0]?.message, res);
-        const response = await services.deleteHistories(req.query);
+        const response = await services.deleteHistory(user_id, req.body);
         return res.status(200).json(response);
     }
     catch (error) {

@@ -10,3 +10,4 @@ export * from './like.controller';
 export * from './comment.controller';
 export * from './share.controller';
 export * from './review.controller';
+export * from './insert.controller';

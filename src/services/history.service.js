@@ -69,10 +69,13 @@ export const updateHistory = (user_id, body) => new Promise( async(resolve, reje
 
 //DELETE
 //[id1, id2,..]
-export const deleteHistories = ({ids}) => new Promise( async(resolve, reject) => {
+export const deleteHistory = (user_id, body) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.History.destroy({
-            where: { id: ids }
+            where: { 
+                user_id, 
+                book_id: body.book_id 
+            }
         });
         resolve({
             err: response > 0 ? 0 : -1,
