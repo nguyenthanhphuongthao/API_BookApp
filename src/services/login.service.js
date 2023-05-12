@@ -15,7 +15,7 @@ export const login = ({email, password}) => new Promise( async(resolve, reject) 
             },
             raw: true,
             attributes: {
-                exclude: ['token', 'createdAt', 'updatedAt']
+                exclude: ['createdAt', 'updatedAt']
             }
             });
 

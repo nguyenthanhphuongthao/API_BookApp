@@ -15,10 +15,12 @@ export const listPosts = ({page, limit, order, search_key, ...query}) => new Pro
         const response = await db.Post.findAndCountAll({
             where: query,
             ...queries,
-            attributes: ['id', 'tcontent', 'image'],
+            attributes: {
+                exclude: ['user_id', 'updatedAt']
+            },
+            nest: true,
             include: [
-                { model: db.User, as: 'user', attributes: ['full_name'] },
-                { model: db.Status, as: 'status', attributes: ['value'] }
+                { model: db.User, as: 'user', attributes: ['full_name'] }
             ]
         });
         resolve({
@@ -26,7 +28,6 @@ export const listPosts = ({page, limit, order, search_key, ...query}) => new Pro
             message: response.count > 0 ? 'Tìm thấy bài đăng' : 'Không có bài đăng nào!',
             data: response
         });
-        if (path && response.count == 0) cloudinary.uploader.destroy(path);
     }
     catch (error) {
         reject(error);
@@ -49,6 +50,7 @@ export const createPost = (user_id, body, path) => new Promise( async(resolve, r
     catch (error) {
         reject(error);
     }
+    if (path && response.count == 0) cloudinary.uploader.destroy(path);
 });
 
 //UPDATE
