@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     author: DataTypes.STRING,
     publisher_id: DataTypes.INTEGER,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT('long'),
     page_number: DataTypes.INTEGER,
     category_id: DataTypes.INTEGER,
     image_url: DataTypes.STRING,
