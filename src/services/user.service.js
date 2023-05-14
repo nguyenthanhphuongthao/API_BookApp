@@ -1,3 +1,4 @@
+import { avatar } from '../helpers/joi_schema';
 import db from '../models';
 
 export const getCurrentUser = (id) => new Promise( async(resolve, reject) => {
@@ -80,17 +81,13 @@ export const updateProfile = (id, data) => new Promise( async(resolve, reject) =
 
 export const updateAvatar = (id, file) => new Promise( async(resolve, reject) => {
     try {
-        const user = await db.User.findOne({
-            where: { id }
-        });
-        const oldAvatar = user.toJSON().avatar;
-        console.log(oldAvatar);
         const response = await db.User.update({avatar: file.path}, {
             where: { id }
         });
         resolve({
             err: response[0] > 0 ? 0 : -1,
-            message: response[0] > 0 ? 'Cập nhật ảnh đại diện thành công' : 'Cập nhật ảnh đại diện thất bại!'
+            message: response[0] > 0 ? 'Cập nhật ảnh đại diện thành công' : 'Cập nhật ảnh đại diện thất bại!',
+            avatar: file.path
         });
         if (file && !(response[0] > 0)) cloudinary.uploader.destroy(file.filename);
     }

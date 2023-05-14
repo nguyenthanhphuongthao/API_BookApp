@@ -14,10 +14,11 @@ export const listComments = ({page, limit, order, search_key, ...query}) => new 
         const response = await db.Comment.findAndCountAll({
             where: query,
             ...queries,
-            attributes: ['id', 'tcontent'],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
             include: [
                 { model: db.User, as: 'user', attributes: ['full_name'] },
-                { model: db.Post, as: 'post', attributes: ['tcontent', 'image'] },
                 { model: db.Status, as: 'status', attributes: ['value'] }
             ]
         });

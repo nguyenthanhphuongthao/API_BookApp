@@ -15,6 +15,6 @@ router.use(verifyToken);
 router.use(isAdmin);
 router.post('/', controllers.createBook);
 router.put('/', controllers.updateBook);
-router.delete('/', controllers.deleteBooks);
+router.post('/delete', controllers.deleteBooks);
 
 module.exports = router;

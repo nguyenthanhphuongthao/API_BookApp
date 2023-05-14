@@ -20,7 +20,7 @@ export const listPosts = ({page, limit, order, search_key, ...query}) => new Pro
             },
             nest: true,
             include: [
-                { model: db.User, as: 'user', attributes: ['full_name'] }
+                { model: db.User, as: 'user', attributes: ['full_name', 'avatar'] }
             ]
         });
         resolve({
@@ -29,7 +29,7 @@ export const listPosts = ({page, limit, order, search_key, ...query}) => new Pro
             data: response
         });
     }
-    catch (error) {
+    catch (error) { 
         reject(error);
     }
 });
@@ -50,7 +50,6 @@ export const createPost = (user_id, body, path) => new Promise( async(resolve, r
     catch (error) {
         reject(error);
     }
-    if (path && response.count == 0) cloudinary.uploader.destroy(path);
 });
 
 //UPDATE

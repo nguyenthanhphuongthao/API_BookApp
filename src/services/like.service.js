@@ -1,5 +1,6 @@
 import db from '../models';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
+import { status_id } from '../helpers/joi_schema';
 
 //READ
 export const listLikes = ({page, limit, order, search_key, ...query}) => new Promise( async(resolve, reject) => {
@@ -14,10 +15,9 @@ export const listLikes = ({page, limit, order, search_key, ...query}) => new Pro
         const response = await db.Like.findAndCountAll({
             where: query,
             ...queries,
-            attributes: ['id'],
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [
                 { model: db.User, as: 'user', attributes: ['full_name'] },
-                { model: db.Post, as: 'post', attributes: ['tcontent', 'image'] },
                 { model: db.Status, as: 'status', attributes: ['value'] }
             ]
         });
@@ -35,13 +35,17 @@ export const listLikes = ({page, limit, order, search_key, ...query}) => new Pro
 //CREATE
 export const createLike = (user_id, body) => new Promise( async(resolve, reject) => {
     try {
-        const response = await db.Like.create({
-            user_id,
-            ...body
+        const response = await db.Like.findOrCreate({
+            where: { user_id, post_id: body.post_id },
+            defaults: {
+                user_id,
+                ...body
+            }
         });
         resolve({
-            err: response ? 0 : -1,
-            message: 'Thêm lượt yêu thích thành công'
+            err: response[1] ? 0 : -1,
+            message: response[1] ? 'Thêm lượt yêu thích thành công' : 'Đã tồn lại lượt yêu thích này',
+            status_id: response[0].status_id
         });
     }
     catch (error) {
@@ -54,7 +58,7 @@ export const updateLike = (user_id, body) => new Promise( async(resolve, reject)
     try {
         const response = await db.Like.update(body, {
             where: { 
-                id: body.id,
+                post_id: body.post_id,
                 user_id
             }
         });
@@ -70,10 +74,10 @@ export const updateLike = (user_id, body) => new Promise( async(resolve, reject)
 
 //DELETE
 //[id1, id2,..]
-export const deleteLikes = ({ids}) => new Promise( async(resolve, reject) => {
+export const deleteLikes = (user_id, body) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.Like.destroy({
-            where: { id: ids }
+            where: { user_id, post_id: body.post_id }
         });
         resolve({
             err: response > 0 ? 0 : -1,

@@ -28,10 +28,6 @@ export const name = joi.string().required();
 
 //post
 export const user_id = joi.number().integer().required();
-// export const content = joi.object().keys({
-//     text: joi.string().required(),
-//     media: joi.array().items(joi.string())
-//     }).allow(null);
 export const content = joi.string().required();
 export const image = joi.string().allow(null);
 //book

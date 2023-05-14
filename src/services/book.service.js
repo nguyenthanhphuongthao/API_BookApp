@@ -11,11 +11,13 @@ export const listBooks = ({page, limit, order, search_key, ...query}) => new Pro
         queries.limit = fLimit;
         if (order) queries.order = [order];
         if (search_key) query.title = { [Op.substring]: search_key };
-        if (search_key) query.author = { [Op.substring]: search_key };
+        //if (search_key) query.author = { [Op.substring]: search_key };
         const response = await db.Book.findAndCountAll({
             where: query,
             ...queries,
-            attributes: ['id', 'title', 'author', 'description', 'image_url', 'link'],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
             include: [
                 { model: db.Category, as: 'category', attributes: ['name'] },
                 { model: db.Publisher, as: 'publisher', attributes: ['name'] },

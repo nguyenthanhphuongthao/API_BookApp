@@ -14,7 +14,10 @@ export const listHistories = ({page, limit, order, search_key, ...query}) => new
         const response = await db.History.findAndCountAll({
             where: query,
             ...queries,
-            attributes: { exclude: ['createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+                { model: db.Book, as: 'book', attributes: { exclude: ['createdAt', 'updatedAt'] } }
+            ]
         });
         resolve({
             err: response.count > 0 ? 0 : -1,
