@@ -12,7 +12,7 @@ router.get('/', controllers.listHistories);
 router.use(verifyToken);
 router.post('/', controllers.createHistory);
 router.put('/', controllers.updateHistory);
-router.delete('/', controllers.deleteHistory);
+router.post('/delete', controllers.deleteHistory);
 
 //router.use(isAdmin);
 
