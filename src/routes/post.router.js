@@ -13,6 +13,7 @@ router.get('/', controllers.listPosts);
 router.use(verifyToken);
 router.post('/', uploadCloud.single('image'), controllers.createPost);
 router.put('/', controllers.updatePost);
+router.put('/status', controllers.updateStatusPost);
 router.delete('/', controllers.deletePosts);
 
 //router.use(isAdmin);

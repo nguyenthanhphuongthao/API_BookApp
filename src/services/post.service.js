@@ -39,8 +39,8 @@ export const createPost = (user_id, body, path) => new Promise( async(resolve, r
     try {
         const response = await db.Post.create({
             user_id,
-            ...body,
-            image: path
+            image: path,
+            ...body
         });
         resolve({
             err: response ? 0 : -1,
@@ -70,6 +70,23 @@ export const updatePost = (user_id, body) => new Promise( async(resolve, reject)
         reject(error);
     }
 });
+
+//UPDATE STATUS POST
+export const updateStatusPost = (body) => new Promise( async(resolve, reject) => {
+    try {
+        const response = await db.Post.update(body, {
+            where: { id: body.id }
+        });
+        resolve({
+            err: response[0] > 0 ? 0 : -1,
+            message: response[0] > 0 ? 'Cập nhật trạng thái bài đăng thành công' : 'Cập nhật trạng thái bài đăng thất bại!',
+        });
+    }
+    catch (error) {
+        reject(error);
+    }
+});
+
 
 //DELETE
 //[id1, id2,..]

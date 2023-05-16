@@ -40,6 +40,19 @@ export const updateBook = async (req, res) => {
     }
 };
 
+export const updateStatusBook = async (req, res) => {
+    try {
+        const { error } = joi.object({ id, status_id }).validate(req.body);
+        if (error) return badRequest(error.details[0]?.message, res);
+        const response = await services.updateStatusBook(req.body);
+        return res.status(200).json(response);
+    }
+    catch (error) {
+        console.log(error)
+        return internalServerError(res)
+    }
+};
+
 export const deleteBooks = async (req, res) => {
     try {
         const { error } = joi.object({ ids }).validate(req.query);

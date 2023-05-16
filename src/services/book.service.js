@@ -68,6 +68,22 @@ export const updateBook = ({id, ...body}) => new Promise( async(resolve, reject)
     }
 });
 
+//UPDATE STATUS BY ID
+export const updateStatusBook = ({id, ...body}) => new Promise( async(resolve, reject) => {
+    try {
+        const response = await db.Book.update(body, {
+            where: { id }
+        });
+        resolve({
+            err: response[0] > 0 ? 0 : -1,
+            message: response[0] > 0 ? 'Cập nhật trạng thái sách thành công' : 'Cập nhật trạng thái sách thất bại!',
+        });
+    }
+    catch (error) {
+        reject(error);
+    }
+});
+
 //DELETE
 //[id1, id2,..]
 export const deleteBooks = ({ids}) => new Promise( async(resolve, reject) => {
