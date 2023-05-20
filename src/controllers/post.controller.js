@@ -1,6 +1,6 @@
 import * as services from "../services";
 import { internalServerError, badRequest } from "../middlewares/handle_errors";
-import { ids, id, user_id, tcontent, status_id, image } from "../helpers/joi_schema";
+import { ids, id, user_id, tcontent, status_id, image, book_id } from "../helpers/joi_schema";
 import * as joi from "joi";
 const cloudinary = require('cloudinary').v2;
 
@@ -67,6 +67,20 @@ export const deletePosts = async (req, res) => {
         const { error } = joi.object({ ids }).validate(req.query);
         if (error) return badRequest(error.details[0]?.message, res);
         const response = await services.deletePosts(req.query);
+        return res.status(200).json(response);
+    }
+    catch (error) {
+        console.log(error)
+        return internalServerError(res)
+    }
+}
+
+export const shareBook = async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const { error } = joi.object({ user_id, book_id, tcontent, image }).validate({user_id, ...req.body});
+        if (error) return badRequest(error.details[0]?.message, res);
+        const response = await services.shareBook(user_id, req.body);
         return res.status(200).json(response);
     }
     catch (error) {

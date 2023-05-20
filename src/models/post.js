@@ -25,12 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User, {
         as: 'user',
         foreignKey: 'user_id' });
+      Post.belongsTo(models.Book, {
+        as: 'book',
+        foreignKey: 'book_id' });
     }
   }
   Post.init({
     user_id: DataTypes.INTEGER,
     tcontent: DataTypes.STRING,
     image: DataTypes.STRING,
+    book_id: DataTypes.INTEGER,
     status_id: DataTypes.INTEGER
   }, {
     sequelize,

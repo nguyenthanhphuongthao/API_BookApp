@@ -104,3 +104,19 @@ export const deletePosts = ({ids}) => new Promise( async(resolve, reject) => {
         reject(error);
     }
 });
+
+export const shareBook = (user_id, body) => new Promise( async(resolve, reject) => {
+    try {
+        const response = await db.Post.create({
+            user_id,
+            ...body
+        });
+        resolve({
+            err: response ? 0 : -1,
+            message: 'Chia sẻ sách thành công'
+        });
+    }
+    catch (error) {
+        reject(error);
+    }
+});

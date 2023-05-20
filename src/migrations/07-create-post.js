@@ -24,6 +24,10 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      book_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
       status_id: {
         type: Sequelize.INTEGER,
         defaultValue: 6,

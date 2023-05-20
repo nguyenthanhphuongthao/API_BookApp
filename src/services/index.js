@@ -8,6 +8,5 @@ export * from './post.service';
 export * from './like.service';
 export * from './comment.service';
 export * from './history.service';
-export * from './share.service';
 export * from './review.service';
 export * from './insert.service';
