@@ -14,7 +14,9 @@ export const listReviews = ({page, limit, order, search_key, ...query}) => new P
         const response = await db.Review.findAndCountAll({
             where: query,
             ...queries,
-            attributes: ['id', 'tcontent', 'rate'],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
             include: [
                 { model: db.User, as: 'user', attributes: ['full_name'] },
                 { model: db.Book, as: 'book', attributes: ['title'] },
