@@ -71,10 +71,10 @@ export const updateComment = (user_id, body) => new Promise( async(resolve, reje
 
 //DELETE
 //[id1, id2,..]
-export const deleteComments = ({ids}) => new Promise( async(resolve, reject) => {
+export const deleteComments = (id) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.Comment.destroy({
-            where: { id: ids }
+            where: id
         });
         resolve({
             err: response > 0 ? 0 : -1,

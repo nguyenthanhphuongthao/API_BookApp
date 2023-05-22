@@ -43,8 +43,6 @@ export const updateComment = async (req, res) => {
 
 export const deleteComments = async (req, res) => {
     try {
-        const { error } = joi.object({ ids }).validate(req.query);
-        if (error) return badRequest(error.details[0]?.message, res);
         const response = await services.deleteComments(req.query);
         return res.status(200).json(response);
     }

@@ -44,8 +44,6 @@ export const updateReview = async (req, res) => {
 
 export const deleteReviews = async (req, res) => {
     try {
-        const { error } = joi.object({ ids }).validate(req.query);
-        if (error) return badRequest(error.details[0]?.message, res);
         const response = await services.deleteReviews(req.query);
         return res.status(200).json(response);
     }

@@ -72,10 +72,10 @@ export const updateReview = (user_id, body) => new Promise( async(resolve, rejec
 
 //DELETE
 //[id1, id2,..]
-export const deleteReviews = ({ids}) => new Promise( async(resolve, reject) => {
+export const deleteReviews = (id) => new Promise( async(resolve, reject) => {
     try {
         const response = await db.Review.destroy({
-            where: { id: ids }
+            where: id
         });
         resolve({
             err: response > 0 ? 0 : -1,
