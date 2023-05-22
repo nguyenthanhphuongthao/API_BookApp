@@ -195,7 +195,7 @@ export const checkOTP = ({email, otp}) => new Promise( async(resolve, reject) =>
         });
 
         if (user) {
-            if (user.otp == otp) {
+            if (user.otp == otp && user.role_id == 3) {
                 resolve({
                     err: 0,
                     message: 'Xác thực người dùng thành công'
@@ -209,7 +209,7 @@ export const checkOTP = ({email, otp}) => new Promise( async(resolve, reject) =>
             else {
                 resolve({
                     err: -1,
-                    message: 'OTP không đúng!'
+                    message: 'OTP không đúng hoặc tài khoản chưa xác thực! Nếu là tài khoản admin thì bạn không có quyền đổi mật khẩu!'
                 });
             }
         }
