@@ -3,11 +3,11 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
    'bookapp',
    'root',
-   null,
+   "123456789",
     {
       host: process.env.DB_HOST,
       dialect: 'mysql',
-      port: 3307,
+      port: 3306,
       logging: false
     }
   );

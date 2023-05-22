@@ -45,12 +45,7 @@ export const getProfile = (id) => new Promise( async(resolve, reject) => {
                             include: [
                                 { model: db.User, as: 'user', attributes: ['id','full_name']}
                         ]},
-                    ]},
-                { model: db.Share, as: 'shares',
-                    attributes: ['tcontent', 'createdAt'],
-                    include: [
-                        { model: db.Post, as: 'post', attributes: ['id','tcontent']}
-                ]},
+                    ]}
             ]
         });
         resolve({

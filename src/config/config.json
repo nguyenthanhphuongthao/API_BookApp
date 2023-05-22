@@ -1,11 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "123456789",
     "database": "bookapp",
     "host": "localhost",
     "dialect": "mysql",
-    "port": 3307,
+    "port": 3306,
     "logging": false,
     "timezone": "+07:00"
   },

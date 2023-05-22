@@ -19,9 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       Status.hasMany(models.Like, {
         as: 'likes',
         foreignKey: 'status_id' });
-      Status.hasMany(models.Share, {
-        as: 'shares',
-        foreignKey: 'status_id' });
       Status.hasMany(models.History, {
         as: 'histories',
         foreignKey: 'status_id' });
